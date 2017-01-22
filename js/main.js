@@ -1,12 +1,13 @@
 // We wait for the document to finish loading
-$(document).ready( function() {
+document.addEventListener("DOMContentLoaded", function(event) {
   const currHash = getHash();
-  $('h5').each( function( c ) {
-    $(this).css({color: colors[(v+c) % 5]});
-  });
   $('.collapsible').collapsible();
   // Change the color of the header based on the amount of times you visited the page
-  $('header h1 span').css({color: colors[(v+3) % 5]});
+  document.querySelector('header h1 span').style.color = colors[(v+3) % 5];
+  const h5 = $('h5');
+  for(let i = 0; i < h5.length; i++) {
+    $(h5[i]).style.color = colors[(v+i) % 5];
+  };
 
   if (typeof(currHash) !== 'boolean') {
     $('li[data-hash="' + currHash + '"] > div').trigger('click');
@@ -56,7 +57,8 @@ setInterval(function() {
   // Check is current time + 10 minutes smaller than the starting time
   if(now+1000*60*10 < start) {
     // If it is, show the box and start counting down
-    $('.countdown').show(400);
+    //$('.countdown').show(400);
+    '.countdown'.style.display = '';
   } else {
     liveActive = true;
     // Otherwise, show the livestream and abjust the height of it to be in
@@ -75,11 +77,11 @@ setInterval(function() {
   const secs = Math.floor( (dist % _minute) / _second );
 
   let str  = 	(days > 0) 		? '<span>' + days + ' Days</span>' 		: '';
-  str +=		(hours > 0) 	? '<span>' + hours + ' Hours</span>'	: '';
-  str +=		(mins > 0) 		? '<span>' + mins + ' Minutes</span>'	: '';
-  str +=		'<span>' + secs + ' Seconds</span>';
+      str +=	(hours > 0) 	? '<span>' + hours + ' Hours</span>'	: '';
+      str +=	(mins > 0) 		? '<span>' + mins + ' Minutes</span>'	: '';
+      str +=	                '<span>' + secs + ' Seconds</span>'     ;
 
-  $('.countdown .countdown__counter').html(str);
+  '.countdown .countdown__counter'.innerHTML = str;
 }, 1000); // Set the time of the interval, in ms, so 1000 (1s)
 
 // Show the livefeed

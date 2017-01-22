@@ -1,3 +1,5 @@
+'use strict';
+
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const concat = require('gulp-concat');
@@ -15,7 +17,7 @@ gulp.task('dev', ['webserver'], function () {
 });
 
 gulp.task('compress', function() {
-  gulp.src(['./node_modules/jquery/dist/jquery.js', './js/*.js', './node_modules/materialize-css/dist/js/materialize.js'])
+  gulp.src(['./js/*.js', 'node_modules/material-components-web/dist/material-components-web.js'])
     .pipe(concat('main.js'))
     .pipe(babel())
     .pipe(minify({
@@ -31,7 +33,10 @@ gulp.task('compress', function() {
 
 gulp.task('scss', function() {
   return gulp.src('css/main.scss')
-    .pipe(sass())
+    .pipe(sass({
+      outputStyle: 'compressed',
+      includePaths: ['node_modules']
+    }).on('error', sass.logError))
     .pipe(cleanCSS({compatibility: 'ie8', processImport: false}))
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest('dist/css'));
